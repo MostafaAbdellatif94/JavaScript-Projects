@@ -1,9 +1,4 @@
-/* =========================
-   SLIDESHOW FUNCTION
-========================= */
-
 let slideIndex = 1;
-
 showSlides(slideIndex);
 
 function plusSlides(n) {
@@ -15,12 +10,9 @@ function currentSlide(n) {
 }
 
 function showSlides(n) {
-
     let i;
-
-    let slides = document.getElementsByClassName("slide");
-
-    let dots = document.getElementsByClassName("dot");
+    const slides = document.getElementsByClassName("slide");
+    const dots = document.getElementsByClassName("dot");
 
     if (n > slides.length) {
         slideIndex = 1;
@@ -39,69 +31,28 @@ function showSlides(n) {
     }
 
     slides[slideIndex - 1].style.display = "block";
-
     dots[slideIndex - 1].className += " active";
 }
 
+setInterval(function () {
+    plusSlides(1);
+}, 5000);
 
-/* =========================
-   CONTACT FORM MESSAGE
-========================= */
-
-document.addEventListener("DOMContentLoaded", function () {
-
-    const form = document.querySelector("form");
-
-    if (form) {
-
-        form.addEventListener("submit", function (e) {
-
-            e.preventDefault();
-
-            alert("Thank you! Your message has been sent.");
-
-            form.reset();
-
+const navLinks = document.querySelectorAll("nav a");
+navLinks.forEach(function (link) {
+    link.addEventListener("click", function () {
+        navLinks.forEach(function (item) {
+            item.classList.remove("active");
         });
-
-    }
-
-});
-
-
-/* =========================
-   NAVBAR SCROLL EFFECT
-========================= */
-
-window.addEventListener("scroll", function () {
-
-    const nav = document.querySelector("nav");
-
-    if (window.scrollY > 50) {
-        nav.style.background = "#000";
-    } else {
-        nav.style.background = "#111a30";
-    }
-
-});
-
-
-/* =========================
-   SMOOTH NAVIGATION
-========================= */
-
-document.querySelectorAll("nav a").forEach(anchor => {
-
-    anchor.addEventListener("click", function (e) {
-
-        e.preventDefault();
-
-        const section = document.querySelector(this.getAttribute("href"));
-
-        section.scrollIntoView({
-            behavior: "smooth"
-        });
-
+        this.classList.add("active");
     });
-
 });
+
+const contactForm = document.getElementById("contactForm");
+if (contactForm) {
+    contactForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+        alert("Thank you for your message!");
+        contactForm.reset();
+    });
+}
