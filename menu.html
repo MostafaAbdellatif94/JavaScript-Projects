@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pizza Menu</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f8f1e7;
+            margin: 0;
+            padding: 0;
+            color: #222;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 900px;
+            margin: 30px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #c0392b;
+        }
+
+        .section {
+            margin-bottom: 25px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background: #fffaf5;
+        }
+
+        label {
+            display: block;
+            margin: 8px 0;
+            cursor: pointer;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            font-size: 18px;
+            border: none;
+            border-radius: 8px;
+            background: #c0392b;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #a93226;
+        }
+
+        #receipt {
+            margin-top: 25px;
+            padding: 15px;
+            background: #f4f4f4;
+            border-radius: 10px;
+            white-space: pre-line;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Pizza Menu</h1>
+
+        <div class="section">
+            <h2>Choose Size</h2>
+            <label><input type="radio" name="size" value="Personal Pizza" checked> Personal Pizza ($6)</label>
+            <label><input type="radio" name="size" value="Medium Pizza"> Medium Pizza ($10)</label>
+            <label><input type="radio" name="size" value="Large Pizza"> Large Pizza ($14)</label>
+            <label><input type="radio" name="size" value="Extra Large Pizza"> Extra Large Pizza ($16)</label>
+        </div>
+
+        <div class="section">
+            <h2>Choose Meats</h2>
+            <label><input type="checkbox" name="meat" value="Pepperoni"> Pepperoni</label>
+            <label><input type="checkbox" name="meat" value="Sausage"> Sausage</label>
+            <label><input type="checkbox" name="meat" value="Canadian Bacon"> Canadian Bacon</label>
+            <label><input type="checkbox" name="meat" value="Ground Beef"> Ground Beef</label>
+            <label><input type="checkbox" name="meat" value="Anchovy"> Anchovy</label>
+            <label><input type="checkbox" name="meat" value="Chicken"> Chicken</label>
+        </div>
+
+        <div class="section">
+            <h2>Choose Vegetables</h2>
+            <label><input type="checkbox" name="veggie" value="Mushrooms"> Mushrooms</label>
+            <label><input type="checkbox" name="veggie" value="Onions"> Onions</label>
+            <label><input type="checkbox" name="veggie" value="Olives"> Olives</label>
+            <label><input type="checkbox" name="veggie" value="Green Peppers"> Green Peppers</label>
+            <label><input type="checkbox" name="veggie" value="Tomatoes"> Tomatoes</label>
+            <label><input type="checkbox" name="veggie" value="Pineapple"> Pineapple</label>
+            <label><input type="checkbox" name="veggie" value="Spinach"> Spinach</label>
+            <label><input type="checkbox" name="veggie" value="Jalapeño"> Jalapeño</label>
+        </div>
+
+        <button onclick="getReceipt()">Place Order</button>
+
+        <div id="receipt">
+            Your order receipt will appear here.
+        </div>
+    </div>
+
+    <script>
+        function getReceipt() {
+            let text1 = "You Ordered:\n";
+            let runningTotal = 0;
+            let sizeTotal = 0;
+            let selectedSize = "";
+
+            const sizeArray = document.getElementsByName("size");
+            for (let i = 0; i < sizeArray.length; i++) {
+                if (sizeArray[i].checked) {
+                    selectedSize = sizeArray[i].value;
+                    text1 += selectedSize + "\n";
+
+                    if (selectedSize === "Personal Pizza") {
+                        sizeTotal = 6;
+                    } else if (selectedSize === "Medium Pizza") {
+                        sizeTotal = 10;
+                    } else if (selectedSize === "Large Pizza") {
+                        sizeTotal = 14;
+                    } else if (selectedSize === "Extra Large Pizza") {
+                        sizeTotal = 16;
+                    }
+                    runningTotal = sizeTotal;
+                }
+            }
+
+            let selectedMeats = [];
+            const meatArray = document.getElementsByName("meat");
+            for (let i = 0; i < meatArray.length; i++) {
+                if (meatArray[i].checked) {
+                    selectedMeats.push(meatArray[i].value);
+                }
+            }
+
+            let meatTotal = 0;
+            if (selectedMeats.length > 1) {
+                meatTotal = selectedMeats.length - 1;
+            }
+
+            if (selectedMeats.length > 0) {
+                text1 += "\nMeats:\n" + selectedMeats.join("\n") + "\n";
+            }
+
+            runningTotal += meatTotal;
+
+            let selectedVeggies = [];
+            const veggieArray = document.getElementsByName("veggie");
+            for (let i = 0; i < veggieArray.length; i++) {
+                if (veggieArray[i].checked) {
+                    selectedVeggies.push(veggieArray[i].value);
+                }
+            }
+
+            let veggieTotal = 0;
+            if (selectedVeggies.length > 1) {
+                veggieTotal = selectedVeggies.length - 1;
+            }
+
+            if (selectedVeggies.length > 0) {
+                text1 += "\nVegetables:\n" + selectedVeggies.join("\n") + "\n";
+            }
+
+            runningTotal += veggieTotal;
+
+            text1 += "\nSize Total: $" + sizeTotal;
+            text1 += "\nMeat Total: $" + meatTotal;
+            text1 += "\nVegetable Total: $" + veggieTotal;
+            text1 += "\n\nTotal: $" + runningTotal;
+
+            document.getElementById("receipt").innerText = text1;
+        }
+    </script>
+</body>
+</html>
