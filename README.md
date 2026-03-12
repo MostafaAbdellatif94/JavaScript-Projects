@@ -4,5 +4,5 @@ these are small projects I made with JavaScript
 Projects:
 _____________________________________________
 
-Pizza menu
+Pizza menu -
 Calculator
